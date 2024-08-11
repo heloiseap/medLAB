@@ -4,13 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
 public class Consulta {
     @Id
@@ -22,7 +23,7 @@ public class Consulta {
     private String motivo;
 
     //obrigatorio
-    private LocalTime data;
+    private LocalDate data;
 
     //obrigatorio
     private LocalTime hora;

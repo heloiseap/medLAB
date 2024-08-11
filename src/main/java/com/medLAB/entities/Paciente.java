@@ -1,18 +1,24 @@
 package com.medLAB.entities;
 
+import com.medLAB.repositories.PacienteRepository;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    public PacienteRepository pacienteRepository;
+
     private Long id;
 
     //obrigatorio
@@ -24,7 +30,7 @@ public class Paciente {
 
     //obrigatorio
     //validacao
-    private LocalTime dataNascimento;
+    private LocalDate dataNascimento;
 
     //obrigatorio
     //formato 000.000.000-00
@@ -68,7 +74,7 @@ public class Paciente {
     private String numeroConvenio;
 
     //n obrigatorio
-    private LocalTime validadeConvenio;
+    private LocalDate validadeConvenio;
 
     //obrigatorio
     @OneToOne
@@ -77,4 +83,15 @@ public class Paciente {
     //id_usuario?
     //obrigatorio
     private Usuario usuario;
+
+    public void adicionarAlergia(Long idPaciente, String alergia){
+        Paciente paciente = pacienteRepository.findById(idPaciente).get();
+        List<String> listaAlergias = paciente.getListaAlergias();
+        listaAlergias.add(alergia);
+    }
+    public void adicionarCuidadoEspecial(Long idPaciente, String cuidado){
+        Paciente paciente = pacienteRepository.findById(idPaciente).get();
+        List<String> listaCuidados = paciente.getCuidadosEspecificos();
+        listaCuidados.add(cuidado);
+    }
 }

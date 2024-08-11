@@ -24,8 +24,8 @@ public class ConsultaController {
     }
 
     @PutMapping("/{id}")
-    public void alteraConsulta(@PathVariable long id){
-        consultaService.alterarConsulta(id);
+    public void alteraConsulta(@PathVariable long id, @RequestBody @Valid ConsultaRequest consultaRequest){
+        consultaService.alterarConsulta(id, consultaRequest);
     }
 
     @DeleteMapping("/{id}")
