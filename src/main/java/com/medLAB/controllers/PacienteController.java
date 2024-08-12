@@ -24,8 +24,8 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public void alteraPaciente(@PathVariable long id){
-        pacienteService.alterarPaciente(id);
+    public void alteraPaciente(@PathVariable long id, @RequestBody PacienteRequest request){
+        pacienteService.alterarPaciente(id, request);
     }
 
     @DeleteMapping("/{id}")

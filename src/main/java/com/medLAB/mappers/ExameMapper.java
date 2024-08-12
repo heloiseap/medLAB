@@ -5,20 +5,14 @@ import com.medLAB.entities.Exame;
 import com.medLAB.entities.Paciente;
 import com.medLAB.repositories.ExameRepository;
 import com.medLAB.repositories.PacienteRepository;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class ExameMapper {
 
-    final PacienteRepository pacienteRepository;
-    final ExameRepository exameRepository;
+    public static Exame map(ExameRequest exameRequest, Paciente paciente) {
 
-    public Exame map(ExameRequest exameRequest) {
-
-        if (pacienteRepository.findById(exameRequest.getIdPaciente()).isEmpty()){
-            return null;
-        } else {
-            Paciente paciente = pacienteRepository.findById(exameRequest.getIdPaciente()).get();
             Exame exame = new Exame();
             exame.setNomeExame(exameRequest.getNomeExame());
             exame.setData(exameRequest.getData());
@@ -29,6 +23,6 @@ public class ExameMapper {
             exame.setUrlDocumento(exameRequest.getUrlDocumento());
             exame.setPaciente(paciente);
             return exame;
-        }
+
     }
 }

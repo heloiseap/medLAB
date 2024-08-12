@@ -24,8 +24,8 @@ public class ExameController {
     }
 
     @PutMapping("/{id}")
-    public void alteraExame(@PathVariable long id){
-        exameService.alterarExame(id);
+    public void alteraExame(@PathVariable long id, @RequestBody @Valid ExameRequest request){
+        exameService.alterarExame(id, request);
     }
 
     @DeleteMapping("/{id}")

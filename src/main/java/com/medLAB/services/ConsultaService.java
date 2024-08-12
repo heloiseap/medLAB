@@ -8,7 +8,6 @@ import com.medLAB.mappers.ConsultaMapper;
 import com.medLAB.repositories.ConsultaRepository;
 import com.medLAB.repositories.PacienteRepository;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,23 +20,25 @@ import java.util.stream.Collectors;
 @Service
 public class ConsultaService {
 
-    private final ConsultaMapper mapper;
+    //private final ConsultaMapper mapper;
     private final ConsultaRepository consultaRepository;
     private final PacienteRepository pacienteRepository;
+    private ConsultaMapper mapper;
 
-    //erros: req invalido, paciente nao encontrado
-    public void criarConsulta(ConsultaRequest consultaRequest) {
-        consultaRepository.save(mapper.map(consultaRequest));
+    //todo erros: req invalido, paciente nao encontrado
+    public void criarConsulta(@RequestBody @Valid ConsultaRequest consultaRequest) {
+        Paciente paciente = pacienteRepository.findById(consultaRequest.getIdPaciente()).get();
+        Consulta consulta = consultaRepository.save(mapper.map(consultaRequest, paciente));
     }
 
-    //erros: id n encontrado/invalido
+    //todo erros: id n encontrado/invalido
     public void mostrarConsulta(@PathVariable long id) {
         Consulta consulta = consultaRepository.findById(id).get();
     }
 
-    //erro consulta n encontrada
-    //parametros do request nao obrigatorios
-    //request vazio erro
+    //todo erro consulta n encontrada
+    //todo parametros do request nao obrigatorios
+    //todo request vazio erro
     public void alterarConsulta(@PathVariable long id, @RequestBody @Valid ConsultaRequest request) {
         if (consultaRepository.findById(id).isEmpty()) {
             //erro
@@ -77,7 +78,7 @@ public class ConsultaService {
 
     public void deletarConsulta(@PathVariable long id) {
         if (consultaRepository.findById(id).isEmpty()) {
-            //erro
+            //todo erro
         } else {
             consultaRepository.deleteById(id);
         }

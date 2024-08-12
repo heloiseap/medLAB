@@ -11,7 +11,7 @@ public class PacienteMapper {
 
     final PacienteRepository pacienteRepository;
 
-    public Paciente map(PacienteRequest request){
+    public static Paciente map(PacienteRequest request){
         Paciente paciente = new Paciente();
         paciente.setNome(request.getNome());
         paciente.setGenero(request.getCpf());

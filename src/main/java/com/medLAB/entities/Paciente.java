@@ -2,95 +2,87 @@ package com.medLAB.entities;
 
 import com.medLAB.repositories.PacienteRepository;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "paciente")
 public class Paciente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    public PacienteRepository pacienteRepository;
-
+    @Column(name = "id_paciente")
     private Long id;
 
-    //obrigatorio
-    //min 8 max 64
+    @Column(nullable = false)
+    @Size(min = 8, max = 64)
     private String nome;
 
-    //obrigatorio
+    @Column(nullable = false)
     private String genero;
 
-    //obrigatorio
-    //validacao
+    @Column(nullable = false)
+    @Past
     private LocalDate dataNascimento;
 
-    //obrigatorio
-    //formato 000.000.000-00
+    @Column(nullable = false)
+    @Pattern(regexp = "\\d\\d\\d\\.\\d\\d\\d\\.\\d\\d\\d-\\d\\d")
     private String cpf;
 
-    //obrigatorio
-    //com orgao expeditor 0000000 UF/SSP
-    //max 20
+    @Column(nullable = false)
+    @Pattern(regexp = "\\d.*\\d\\d\\d.*\\d\\d\\d\\s[A-Za-z][A-Za-z]/[A-Za-z]{2,20}")
+    @Size(max = 36)
     private String rg;
 
-    //obrigatorio
+    @Column(nullable = false)
     private String estadoCivil;
 
-    //obrigatorio
-    //formato (99) 9 9999-9999
+    @Column(nullable = false)
+    @Pattern(regexp = "\\(\\d\\d\\)\\s9\\s[0-9]+-[0-9]+")
     private String telefone;
 
-    //n obrigatorio
-    //validacao
+    @Email
     private String email;
 
-    //obrigatorio
-    //min 8 max 64
+    @Column(nullable = false)
+    @Size(min = 8, max = 64)
     private String naturalidade;
 
-    //obrigatorio
-    //formato (99) 9 9999-9999
-    //nome contato?
+    @Column(nullable = false)
+    @Pattern(regexp = "\\(\\d\\d\\)\\s9\\s[0-9]+-[0-9]+")
     private String contatoEmergencia;
 
-    //n obrigatorio
     private List<String> listaAlergias;
 
-    //n obrigatorio
     private List<String> cuidadosEspecificos;
 
-    //n obrigatorio
     private String convenio;
 
-    //n obrigatorio
     private String numeroConvenio;
 
-    //n obrigatorio
     private LocalDate validadeConvenio;
 
-    //obrigatorio
     @OneToOne
+    @JoinColumn(name = "id_endereco")
     private Endereco endereco;
 
     //id_usuario?
-    //obrigatorio
+    @Column(nullable = false)
     private Usuario usuario;
 
-    public void adicionarAlergia(Long idPaciente, String alergia){
-        Paciente paciente = pacienteRepository.findById(idPaciente).get();
+    public void adicionarAlergia(Paciente paciente, String alergia){
         List<String> listaAlergias = paciente.getListaAlergias();
         listaAlergias.add(alergia);
     }
-    public void adicionarCuidadoEspecial(Long idPaciente, String cuidado){
-        Paciente paciente = pacienteRepository.findById(idPaciente).get();
+    public void adicionarCuidadoEspecial(Paciente paciente, String cuidado){
         List<String> listaCuidados = paciente.getCuidadosEspecificos();
         listaCuidados.add(cuidado);
     }

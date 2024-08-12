@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class PacienteService {
 
     private final PacienteRepository pacienteRepository;
-    private final PacienteMapper mapper;
+    private PacienteMapper mapper;
 
     public void cadastrarPaciente(@RequestBody @Valid PacienteRequest pacienteRequest) {
         pacienteRepository.save(mapper.map(pacienteRequest));
@@ -65,10 +65,10 @@ public class PacienteService {
                 paciente.setContatoEmergencia(request.getContatoEmergencia());
             }
             if(!request.getAlergia().isEmpty()){
-                paciente.adicionarAlergia(id, request.getAlergia());
+                paciente.adicionarAlergia(paciente, request.getAlergia());
             }
             if(!request.getCuidadosEspecificos().isEmpty()){
-                paciente.adicionarCuidadoEspecial(id, request.getCuidado());
+                paciente.adicionarCuidadoEspecial(paciente, request.getCuidado());
             }
             if(!request.getConvenio().isEmpty()){
                 paciente.setConvenio(request.getConvenio());

@@ -19,13 +19,18 @@ import java.util.stream.Collectors;
 @Service
 public class ExameService {
 
-    private final ExameMapper mapper;
+    private ExameMapper mapper;
     private final ExameRepository exameRepository;
     private final PacienteRepository pacienteRepository;
 
     //erros: req invalido, paciente nao encontrado
     public void criarExame(ExameRequest exameRequest) {
-        exameRepository.save(mapper.map(exameRequest));
+        if (pacienteRepository.findById(exameRequest.getIdPaciente()).isEmpty()){
+            //todo erro
+        } else {
+            Paciente paciente = pacienteRepository.findById(exameRequest.getIdPaciente()).get();
+            exameRepository.save(mapper.map(exameRequest, paciente));
+        }
     }
 
     //erros: id n encontrado/invalido

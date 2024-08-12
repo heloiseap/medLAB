@@ -1,46 +1,40 @@
 package com.medLAB.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
+@Table(name = "consulta")
 public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //obrigatorio
-    //8~64
+    @Column(nullable = false)
+    @Size(min = 8,max = 64)
     private String motivo;
 
-    //obrigatorio
+    @Column(nullable = false)
     private LocalDate data;
 
-    //obrigatorio
+    @Column(nullable = false)
     private LocalTime hora;
 
-    //obrigatorio
-    //16~1024
+    @Column(nullable = false)
+    @Size(min = 16, max = 1024)
     private String descricaoProblema;
 
-    //n obrigatorio
     private String medicacaoReceitada;
 
-    //n obrigatorio
-    //16~256
+    @Size(min = 16, max = 256)
     private String dosagemEPrecaucoes;
 
-    //obrigatorio
-    //relacionamento
-    //id
+    @ManyToOne
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 }
