@@ -2,11 +2,13 @@ package com.medLAB.controllers;
 
 import com.medLAB.dtos.ConsultaRequest;
 import com.medLAB.dtos.ConsultaResponse;
+import com.medLAB.exceptions.TratamentoErros;
 import com.medLAB.services.ConsultaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -18,18 +20,14 @@ import java.util.NoSuchElementException;
 public class ConsultaController {
 
     public final ConsultaService consultaService;
-
+    public final TratamentoErros tratamentoErros;
 
     //todo erro
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void criaConsulta(@RequestBody @Valid ConsultaRequest consultaRequest){
-        try {
             consultaService.criarConsulta(consultaRequest);
 
-        } catch (HttpServerErrorException.InternalServerError exception) {
-            //throw new MethodArgumentNotValidException();
-        }
     }
 
     @GetMapping("/{id}")
