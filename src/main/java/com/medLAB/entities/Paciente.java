@@ -74,8 +74,8 @@ public class Paciente {
     @JoinColumn(name = "id_endereco")
     private Endereco endereco;
 
-    //id_usuario?
     @Column(nullable = false)
+    @JoinColumn( name = "id_user")
     private Usuario usuario;
 
     public void adicionarAlergia(Paciente paciente, String alergia){

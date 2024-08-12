@@ -32,7 +32,7 @@ public class PacienteMapper {
         return paciente;
     }
 
-    public PacienteResponse map(Paciente request){
+    public static PacienteResponse map(Paciente request){
         PacienteResponse paciente = new PacienteResponse();
         paciente.setId(request.getId());
         paciente.setNome(request.getNome());

@@ -14,34 +14,37 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class ConsultaService {
 
-    //private final ConsultaMapper mapper;
     private final ConsultaRepository consultaRepository;
     private final PacienteRepository pacienteRepository;
     private ConsultaMapper mapper;
 
-    //todo erros: req invalido, paciente nao encontrado
     public void criarConsulta(@RequestBody @Valid ConsultaRequest consultaRequest) {
         Paciente paciente = pacienteRepository.findById(consultaRequest.getIdPaciente()).get();
-        Consulta consulta = consultaRepository.save(mapper.map(consultaRequest, paciente));
+        if (paciente != null) {
+            Consulta consulta = consultaRepository.save(mapper.map(consultaRequest, paciente));
+        }
     }
 
-    //todo erros: id n encontrado/invalido
-    public void mostrarConsulta(@PathVariable long id) {
-        Consulta consulta = consultaRepository.findById(id).get();
+    public ConsultaResponse mostrarConsulta(@PathVariable long id) {
+        if (!consultaRepository.findById(id).isEmpty()) {
+            ConsultaResponse response = mapper.map(consultaRepository.findById(id).get());
+            return response;
+        } else {
+            throw new NoSuchElementException("Consulta não cadastrada");
+        }
     }
 
-    //todo erro consulta n encontrada
-    //todo parametros do request nao obrigatorios
-    //todo request vazio erro
+
     public void alterarConsulta(@PathVariable long id, @RequestBody @Valid ConsultaRequest request) {
         if (consultaRepository.findById(id).isEmpty()) {
-            //erro
+            throw new NoSuchElementException("Consulta não encontrada");
         } else {
 
             Consulta consulta = consultaRepository.findById(id).get();
@@ -66,7 +69,7 @@ public class ConsultaService {
             }
             if (request.getIdPaciente() != null) {
                 if (pacienteRepository.findById(id).isEmpty()) {
-                    //erro
+                    throw new RuntimeException("Paciente não encontrado");
                 } else {
                     Paciente paciente = pacienteRepository.findById(id).get();
                     consulta.setPaciente(paciente);
@@ -78,7 +81,7 @@ public class ConsultaService {
 
     public void deletarConsulta(@PathVariable long id) {
         if (consultaRepository.findById(id).isEmpty()) {
-            //todo erro
+            throw new NoSuchElementException("Identificador não cadastrado");
         } else {
             consultaRepository.deleteById(id);
         }

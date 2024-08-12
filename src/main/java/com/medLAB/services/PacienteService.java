@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -106,7 +108,21 @@ public class PacienteService {
     }
 
     //buscar por nome ou id? todo
-    public void mostrarProntuarios() {
+    public Set<PacienteResponse> mostrarProntuarios(String nome, Long id) {
 
+        Set<Paciente> pacientes = new HashSet<>();
+
+        if (id != null) {
+            pacientes.add(pacienteRepository.findById(id).orElseThrow(/*erro*/));
+        }
+
+        if (nome != null) {
+            pacientes.addAll(pacienteRepository.findAllByNome(nome).stream().toList());
+        }
+
+        Set<PacienteResponse> response = pacientes.stream().map(
+                PacienteMapper::map
+        ).collect(Collectors.toSet());
+        return response;
     }
 }

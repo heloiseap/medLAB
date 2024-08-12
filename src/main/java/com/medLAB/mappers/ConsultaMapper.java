@@ -1,6 +1,7 @@
 package com.medLAB.mappers;
 
 import com.medLAB.dtos.ConsultaRequest;
+import com.medLAB.dtos.ConsultaResponse;
 import com.medLAB.dtos.PacienteResponse;
 import com.medLAB.entities.Consulta;
 import com.medLAB.entities.Paciente;
@@ -26,4 +27,16 @@ public class ConsultaMapper {
         return consulta;
     }
 
+    public ConsultaResponse map(Consulta consulta) {
+        ConsultaResponse consultaResponse = new ConsultaResponse();
+        consultaResponse.setMotivo(consulta.getMotivo());
+        consultaResponse.setData(consulta.getData());
+        consultaResponse.setHora(consulta.getHora());
+        consultaResponse.setDescricaoProblema(consulta.getDescricaoProblema());
+        consultaResponse.setMedicacaoReceitada(consulta.getMedicacaoReceitada());
+        consultaResponse.setDosagemEPrecaucoes(consulta.getDosagemEPrecaucoes());
+        consultaResponse.setIdPaciente(consulta.getPaciente().getId());
+
+        return consultaResponse;
+    }
 }

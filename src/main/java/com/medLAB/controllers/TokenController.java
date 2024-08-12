@@ -2,7 +2,6 @@ package com.medLAB.controllers;
 
 import com.medLAB.dtos.LoginRequest;
 import com.medLAB.dtos.LoginResponse;
-import com.medLAB.dtos.UsuarioRequest;
 import com.medLAB.entities.Usuario;
 import com.medLAB.services.UsuarioService;
 import jakarta.validation.Valid;
